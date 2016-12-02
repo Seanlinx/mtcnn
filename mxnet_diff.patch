@@ -1,0 +1,42 @@
+diff --git a/src/operator/regression_output-inl.h b/src/operator/regression_output-inl.h
+index d70066d..acebc2c 100644
+--- a/src/operator/regression_output-inl.h
++++ b/src/operator/regression_output-inl.h
+@@ -25,9 +25,12 @@ enum RegressionOutputType {kLinear, kLogistic, kMAE};
+ 
+ struct RegressionOutputParam : public dmlc::Parameter<RegressionOutputParam> {
+   float grad_scale;
++  bool out_grad;
+   DMLC_DECLARE_PARAMETER(RegressionOutputParam) {
+     DMLC_DECLARE_FIELD(grad_scale).set_default(1.0f)
+     .describe("Scale the gradient by a float factor");
++    DMLC_DECLARE_FIELD(out_grad).set_default(false)
++    .describe("Apply weighting from output gradient");
+   };
+ };
+ 
+@@ -75,6 +78,10 @@ class RegressionOutputOp : public Operator {
+       .get_with_shape<xpu, 2, real_t>(out.shape_, s);
+     Assign(grad, req[reg_enum::kData], param_.grad_scale/num_output*
+       F<BackwardOp>(out, reshape(label, grad.shape_)));
++    if (param_.out_grad) {
++      Tensor<xpu, 2> ograd = out_grad[reg_enum::kOut].FlatTo2D<xpu, real_t>(s);
++      grad *= ograd;
++    }
+   }
+ 
+  private:
+@@ -148,7 +155,12 @@ class RegressionOutputProp : public OperatorProperty {
+     const std::vector<int> &out_grad,
+     const std::vector<int> &in_data,
+     const std::vector<int> &out_data) const override {
+-    return {in_data[reg_enum::kLabel], out_data[reg_enum::kOut]};
++    if (param_.out_grad) {
++      return {in_data[reg_enum::kLabel], out_data[reg_enum::kOut],
++                out_grad[reg_enum::kOut]};
++    } else {
++      return {in_data[reg_enum::kLabel], out_data[reg_enum::kOut]};
++    }
+   }
+ 
+   std::vector<std::pair<int, void*> > BackwardInplaceOption(
