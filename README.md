@@ -55,7 +55,7 @@ custom (datasets for testing)
 
 ## Results
  
-![image](https://github.com/Seanlinx/mtcnn/blob/master/fddb-result.png)
+![image](https://github.com/Seanlinx/mtcnn/blob/master/fddb_result.png)
     
 
   
