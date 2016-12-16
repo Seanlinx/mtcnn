@@ -106,7 +106,7 @@ def O_Net(mode="train"):
 
     conv3 = mx.symbol.Convolution(data=pool2, kernel=(3, 3), num_filter=64, name="conv3")
     prelu3 = mx.symbol.LeakyReLU(data=conv3, act_type="prelu", name="prelu3")
-    pool3 = mx.symbol.Pooling(data=prelu3, pool_type="max", kernel=(2, 2), stride=(2, 2), name="pool2")
+    pool3 = mx.symbol.Pooling(data=prelu3, pool_type="max", kernel=(2, 2), stride=(2, 2), name="pool3")
 
     conv4 = mx.symbol.Convolution(data=pool3, kernel=(2, 2), num_filter=128, name="conv4")
     prelu4 = mx.symbol.LeakyReLU(data=conv4, act_type="prelu", name="prelu4")
