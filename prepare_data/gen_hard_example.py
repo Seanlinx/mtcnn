@@ -23,7 +23,7 @@ def save_hard_example(net):
 
     # load ground truth from annotation file
     # format of each line: image/path [x1,y1,x2,y2] for each gt_box in this image
-    anno_file = './gen_data/wider_annotations/anno.txt'
+    anno_file = './prepare_data/wider_annotations/anno.txt'
     with open(anno_file, 'r') as f:
         annotations = f.readlines()
 
@@ -46,11 +46,12 @@ def save_hard_example(net):
         im_idx_list.append(im_idx)
         gt_boxes_list.append(boxes)
 
+    save_path = "./prepare_data/%s"%net
     f1 = open(os.path.join(save_path, 'pos_%d.txt'%image_size), 'w')
     f2 = open(os.path.join(save_path, 'neg_%d.txt'%image_size), 'w')
     f3 = open(os.path.join(save_path, 'part_%d.txt'%image_size), 'w')
 
-    det_boxes = cPickle.load(open(os.path.join(gen_data, net, 'detections.pkl'), 'r'))
+    det_boxes = cPickle.load(open(os.path.join(save_path, 'detections.pkl'), 'r'))
     assert len(det_boxes) == num_of_images, "incorrect detections or ground truths"
 
     # index of neg, pos and part face, used as their image names
@@ -89,7 +90,7 @@ def save_hard_example(net):
                 # Iou with all gts must below 0.3
                 save_file = os.path.join(neg_save_dir, "%s.jpg"%n_idx)
                 f2.write("%s/negative/%s"%(image_size, n_idx) + ' 0\n')
-                #cv2.imwrite(save_file, resized_im)
+                cv2.imwrite(save_file, resized_im)
                 n_idx += 1
             else:
                 # find gt_box with the highest iou
@@ -107,7 +108,7 @@ def save_hard_example(net):
                 if np.max(Iou) >= 0.65:
                     save_file = os.path.join(pos_save_dir, "%s.jpg"%p_idx)
                     f1.write("%s/positive/%s"%(image_size, p_idx) + ' 1 %.2f %.2f %.2f %.2f\n'%(offset_x1, offset_y1, offset_x2, offset_y2))
-                    #cv2.imwrite(save_file, resized_im)
+                    cv2.imwrite(save_file, resized_im)
                     p_idx += 1
 
                 elif np.max(Iou) >= 0.4:
@@ -160,7 +161,8 @@ def test_net(root_path, dataset_path, image_set, prefix, epoch,
         net = "rnet"
     elif test_mode == "rnet":
         net = "onet"
-    save_path = "./gen_data/%s"%net
+
+    save_path = "./prepare_data/%s"%net
     if not os.path.exists(save_path):
         os.mkdir(save_path)
     save_file = os.path.join(save_path, "detections.pkl")
@@ -193,7 +195,7 @@ def parse_args():
                         default=24, type=int)
     parser.add_argument('--stride', dest='stride', help='stride of sliding window',
                         default=2, type=int)
-    parser.add_argument('--sw', dest='slide_window', help='dataset folder', action='store_true')
+    parser.add_argument('--sw', dest='slide_window', help='use sliding window in pnet', action='store_true')
     parser.add_argument('--gpu', dest='gpu_id', help='GPU device to train with',
                         default=0, type=int)
     parser.add_argument('--shuffle', dest='shuffle', help='shuffle data on visualization', action='store_true')

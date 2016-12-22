@@ -73,7 +73,7 @@ def parse_args():
                         default=24, type=int)
     parser.add_argument('--stride', dest='stride', help='stride of sliding window',
                         default=2, type=int)
-    parser.add_argument('--sw', dest='slide_window', help='dataset folder', action='store_true')
+    parser.add_argument('--sw', dest='slide_window', help='use sliding window in pnet', action='store_true')
     parser.add_argument('--gpu', dest='gpu_id', help='GPU device to train with',
                         default=0, type=int)
     parser.add_argument('--shuffle', dest='shuffle', help='shuffle data on visualization', action='store_true')
