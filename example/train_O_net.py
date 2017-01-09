@@ -5,8 +5,8 @@ from train import train_net
 from core.symbol import O_Net
 
 def train_O_net(image_set, root_path, dataset_path, prefix, ctx,
-                 pretrained, epoch, begin_epoch,
-                 end_epoch, frequent, lr, resume):
+                pretrained, epoch, begin_epoch,
+                end_epoch, frequent, lr, resume):
     imdb = IMDB("mtcnn", image_set, root_path, dataset_path)
     gt_imdb = imdb.gt_imdb()
     gt_imdb = imdb.append_flipped_images(gt_imdb)
@@ -49,6 +49,6 @@ if __name__ == '__main__':
     print 'Called with argument:'
     print args
     ctx = [mx.gpu(int(i)) for i in args.gpu_ids.split(',')]
-    train_O_net(args.image_set, args.root_path, args.dataset_path, args.prefix, ctx,
-                 args.pretrained, args.epoch,
-                 args.begin_epoch, args.end_epoch, args.frequent, args.lr, args.resume)
+    train_O_net(args.image_set, args.root_path, args.dataset_path, args.prefix,
+                ctx, args.pretrained, args.epoch, args.begin_epoch, 
+                args.end_epoch, args.frequent, args.lr, args.resume)

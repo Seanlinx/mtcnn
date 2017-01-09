@@ -13,7 +13,7 @@ def P_Net(mode='train'):
 
     conv1 = mx.symbol.Convolution(data=data, kernel=(3, 3), num_filter=10, name="conv1")
     prelu1 = mx.symbol.LeakyReLU(data=conv1, act_type="prelu", name="prelu1")
-    pool1 = mx.symbol.Pooling(data=prelu1, pool_type="max", kernel=(2, 2), stride=(2, 2), name="pool1")
+    pool1 = mx.symbol.Pooling(data=prelu1, pool_type="max", pooling_convention="full", kernel=(2, 2), stride=(2, 2), name="pool1")
 
     conv2 = mx.symbol.Convolution(data=pool1, kernel=(3, 3), num_filter=16, name="conv2")
     prelu2 = mx.symbol.LeakyReLU(data=conv2, act_type="prelu", name="prelu2")
@@ -55,11 +55,11 @@ def R_Net(mode='train'):
 
     conv1 = mx.symbol.Convolution(data=data, kernel=(3, 3), num_filter=28, name="conv1")
     prelu1 = mx.symbol.LeakyReLU(data=conv1, act_type="prelu", name="prelu1")
-    pool1 = mx.symbol.Pooling(data=prelu1, pool_type="max", kernel=(3, 3), stride=(2, 2), name="pool1")
+    pool1 = mx.symbol.Pooling(data=prelu1, pool_type="max", pooling_convention="full", kernel=(3, 3), stride=(2, 2), name="pool1")
 
     conv2 = mx.symbol.Convolution(data=pool1, kernel=(3, 3), num_filter=48, name="conv2")
     prelu2 = mx.symbol.LeakyReLU(data=conv2, act_type="prelu", name="prelu2")
-    pool2 = mx.symbol.Pooling(data=prelu2, pool_type="max", kernel=(3, 3), stride=(2, 2), name="pool2")
+    pool2 = mx.symbol.Pooling(data=prelu2, pool_type="max", pooling_convention="full", kernel=(3, 3), stride=(2, 2), name="pool2")
 
     conv3 = mx.symbol.Convolution(data=pool2, kernel=(2, 2), num_filter=64, name="conv3")
     prelu3 = mx.symbol.LeakyReLU(data=conv3, act_type="prelu", name="prelu3")
@@ -98,15 +98,15 @@ def O_Net(mode="train"):
 
     conv1 = mx.symbol.Convolution(data=data, kernel=(3, 3), num_filter=32, name="conv1")
     prelu1 = mx.symbol.LeakyReLU(data=conv1, act_type="prelu", name="prelu1")
-    pool1 = mx.symbol.Pooling(data=prelu1, pool_type="max", kernel=(3, 3), stride=(2, 2), name="pool1")
+    pool1 = mx.symbol.Pooling(data=prelu1, pool_type="max", pooling_convention="full", kernel=(3, 3), stride=(2, 2), name="pool1")
 
     conv2 = mx.symbol.Convolution(data=pool1, kernel=(3, 3), num_filter=64, name="conv2")
     prelu2 = mx.symbol.LeakyReLU(data=conv2, act_type="prelu", name="prelu2")
-    pool2 = mx.symbol.Pooling(data=prelu2, pool_type="max", kernel=(3, 3), stride=(2, 2), name="pool2")
+    pool2 = mx.symbol.Pooling(data=prelu2, pool_type="max", pooling_convention="full", kernel=(3, 3), stride=(2, 2), name="pool2")
 
     conv3 = mx.symbol.Convolution(data=pool2, kernel=(3, 3), num_filter=64, name="conv3")
     prelu3 = mx.symbol.LeakyReLU(data=conv3, act_type="prelu", name="prelu3")
-    pool3 = mx.symbol.Pooling(data=prelu3, pool_type="max", kernel=(2, 2), stride=(2, 2), name="pool3")
+    pool3 = mx.symbol.Pooling(data=prelu3, pool_type="max", pooling_convention="full", kernel=(2, 2), stride=(2, 2), name="pool3")
 
     conv4 = mx.symbol.Convolution(data=pool3, kernel=(2, 2), num_filter=128, name="conv4")
     prelu4 = mx.symbol.LeakyReLU(data=conv4, act_type="prelu", name="prelu4")
