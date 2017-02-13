@@ -128,7 +128,7 @@ def test_net(root_path, dataset_path, image_set, prefix, epoch,
     detectors = [None, None, None]
 
     # load pnet model
-    args, auxs = load_param(prefix[0], epoch[0], convert=False, ctx=ctx)
+    args, auxs = load_param(prefix[0], epoch[0], convert=True, ctx=ctx)
     if slide_window:
         PNet = Detector(P_Net("test"), 12, batch_size[0], ctx, args, auxs)
     else:
@@ -137,13 +137,13 @@ def test_net(root_path, dataset_path, image_set, prefix, epoch,
 
     # load rnet model
     if test_mode in ["rnet", "onet"]:
-        args, auxs = load_param(prefix[1], epoch[0], convert=False, ctx=ctx)
+        args, auxs = load_param(prefix[1], epoch[0], convert=True, ctx=ctx)
         RNet = Detector(R_Net("test"), 24, batch_size[1], ctx, args, auxs)
         detectors[1] = RNet
 
     # load onet model
     if test_mode == "onet":
-        args, auxs = load_param(prefix[2], epoch[2], convert=False, ctx=ctx)
+        args, auxs = load_param(prefix[2], epoch[2], convert=True, ctx=ctx)
         ONet = Detector(O_Net("test"), 48, batch_size[2], ctx, args, auxs)
         detectors[2] = ONet
 
@@ -180,7 +180,7 @@ def parse_args():
     parser.add_argument('--dataset_path', dest='dataset_path', help='dataset folder',
                         default='data/wider', type=str)
     parser.add_argument('--image_set', dest='image_set', help='image set',
-                        default='test', type=str)
+                        default='train', type=str)
     parser.add_argument('--test_mode', dest='test_mode', help='test net type, can be pnet, rnet or onet',
                         default='pnet', type=str)
     parser.add_argument('--prefix', dest='prefix', help='prefix of model name', nargs="+",

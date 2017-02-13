@@ -15,16 +15,19 @@ class TestLoader(mx.io.DataIter):
         self.data = None
         self.label = None
 
+        self.data_names = ['data']
+        self.label_names = []
+
         self.reset()
         self.get_batch()
 
     @property
     def provide_data(self):
-        return [(k, v.shape) for k, v in self.data.items()]
+        return [(k, v.shape) for k, v in zip(self.data_names, self.data)]
 
     @property
     def provide_label(self):
-        return [(k, v.shape) for k, v in self.label.items()]
+        return [(k, v.shape) for k, v in zip(self.label_names, self.label)]
 
     def reset(self):
         self.cur = 0
@@ -57,8 +60,9 @@ class TestLoader(mx.io.DataIter):
         cur_from = self.cur
         cur_to = min(cur_from + self.batch_size, self.size)
         imdb = [self.imdb[self.index[i]] for i in range(cur_from, cur_to)]
-        self.data, self.label = minibatch.get_testbatch(imdb)
-
+        data, label = minibatch.get_testbatch(imdb)
+        self.data = [mx.nd.array(data[name]) for name in self.data_names]
+        self.label = [mx.nd.array(label[name]) for name in self.label_names]
 
 class ImageLoader(mx.io.DataIter):
     def __init__(self, imdb, im_size, batch_size=config.BATCH_SIZE, shuffle=False, ctx=None, work_load_list=None):

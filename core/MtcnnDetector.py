@@ -448,7 +448,7 @@ face candidates:%d, current batch_size:%d"%(num_boxes, batch_size)
         for databatch in test_data:
             if batch_idx % 100 == 0:
                 print "%d images done"%batch_idx
-            im = databatch.data['data']
+            im = databatch.data[0].asnumpy().astype(np.uint8)
             t = time.time()
 
             # pnet

@@ -20,7 +20,7 @@ def test_net(prefix, epoch, batch_size, ctx,
     detectors = [None, None, None]
 
     # load pnet model
-    args, auxs = load_param(prefix[0], epoch[0], convert=False, ctx=ctx)
+    args, auxs = load_param(prefix[0], epoch[0], convert=True, ctx=ctx)
     if slide_window:
         PNet = Detector(P_Net("test"), 12, batch_size[0], ctx, args, auxs)
     else:
@@ -28,12 +28,12 @@ def test_net(prefix, epoch, batch_size, ctx,
     detectors[0] = PNet
 
     # load rnet model
-    args, auxs = load_param(prefix[1], epoch[0], convert=False, ctx=ctx)
+    args, auxs = load_param(prefix[1], epoch[0], convert=True, ctx=ctx)
     RNet = Detector(R_Net("test"), 24, batch_size[1], ctx, args, auxs)
     detectors[1] = RNet
 
     # load onet model
-    args, auxs = load_param(prefix[2], epoch[2], convert=False, ctx=ctx)
+    args, auxs = load_param(prefix[2], epoch[2], convert=True, ctx=ctx)
     ONet = Detector(O_Net("test"), 48, batch_size[2], ctx, args, auxs)
     detectors[2] = ONet
 
